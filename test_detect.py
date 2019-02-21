@@ -21,12 +21,15 @@ def test_detect(data_loader, net, get_pbb, save_dir, config,n_gpu):
     start_time = time.time()
     net.eval()
     split_comber = data_loader.dataset.split_comber
+    print("TEST DETECT")
     for i_name, (data, target, coord, nzhw) in enumerate(data_loader):
         s = time.time()
         target = [np.asarray(t, np.float32) for t in target]
         lbb = target[0]
         nzhw = nzhw[0]
-        name = data_loader.dataset.filenames[i_name].split('-')[0].split('/')[-1]
+        name = data_loader.dataset.filenames[i_name].split('/')[-1]
+        print(name)
+        print(data_loader.dataset.filenames[i_name])
         shortname = name.split('_clean')[0]
         data = data[0][0]
         coord = coord[0][0]
@@ -66,7 +69,7 @@ def test_detect(data_loader, net, get_pbb, save_dir, config,n_gpu):
         #print([len(tp),len(fp),len(fn)])
         print([i_name,shortname])
         e = time.time()
-        
+        print([os.path.join(save_dir, shortname+'_pbb.npy'), os.path.join(save_dir, shortname+'_lbb.npy')])
         np.save(os.path.join(save_dir, shortname+'_pbb.npy'), pbb)
         np.save(os.path.join(save_dir, shortname+'_lbb.npy'), lbb)
     end_time = time.time()

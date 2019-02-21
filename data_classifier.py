@@ -33,7 +33,7 @@ class DataBowl3Classifier(Dataset):
         self.pbb_label = []
         
         idcs = split
-        self.filenames = [os.path.join(datadir, '%s_clean.npy' % idx.split('-')[0]) for idx in idcs]
+        self.filenames = [os.path.join(datadir, '%s_clean.npy' % idx) for idx in idcs]
         if self.phase!='test':
             self.yset = 1-np.array([f.split('-')[1][2] for f in idcs]).astype('int')
  
@@ -76,7 +76,7 @@ class DataBowl3Classifier(Dataset):
         else:
             chosenid = conf_list.argsort()[::-1][:topk]
         croplist = np.zeros([topk,1,self.crop_size[0],self.crop_size[1],self.crop_size[2]]).astype('float32')
-        coordlist = np.zeros([topk,3,self.crop_size[0]/self.stride,self.crop_size[1]/self.stride,self.crop_size[2]/self.stride]).astype('float32')
+        coordlist = np.zeros([topk,3,self.crop_size[0]//self.stride,self.crop_size[1]//self.stride,self.crop_size[2]//self.stride]).astype('float32')
         padmask = np.concatenate([np.ones(len(chosenid)),np.zeros(self.topk-len(chosenid))])
         isnodlist = np.zeros([topk])
 
